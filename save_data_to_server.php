@@ -1,11 +1,11 @@
 <?php
 /* Attempt MySQL server connection. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
-$local_link = mysqli_connect("localhost", "root", "", "attendance_system");
+$link1 = mysqli_connect("localhost", "root", "", "attendance_system");
 $server_link = mysqli_connect("107.180.77.245", "ispeedbiz", "z5^-~(.M2a7N", "ispeedbi_attendance_system");
  
 // Check connection
-if($local_link === false){
+if($link1 === false){
     die("ERROR: Could not connect to local DB. " . mysqli_connect_error());
 }
  if($server_link === false){
@@ -15,7 +15,7 @@ if($local_link === false){
 	date_default_timezone_set("Asia/Calcutta");
     $today = date('d/m/Y');
     $select_query1 = "SELECT * FROM online_attendance WHERE attendance_date='".$today."' AND is_sent=1";
-    $select_result1 = mysqli_query($local_link, $select_query1);
+    $select_result1 = mysqli_query($link1, $select_query1);
     
     if (mysqli_num_rows($select_result1) > 0) 
     {
@@ -31,7 +31,7 @@ if($local_link === false){
     }
     
     $select_query2 = "SELECT * FROM online_attendance WHERE attendance_date='".$today."' AND is_sent=0";
-    $select_result2 = mysqli_query($local_link, $select_query2);
+    $select_result2 = mysqli_query($link1, $select_query2);
     
     if (mysqli_num_rows($select_result2) > 0) 
     {
@@ -50,13 +50,13 @@ if($local_link === false){
     		if($insert_result)
         	{
         		$select_query3 = "SELECT * FROM online_attendance WHERE online_attendance_id='".$online_attendance_id."' AND is_sent=0";
-    			$select_result3 = mysqli_query($local_link, $select_query3);
+    			$select_result3 = mysqli_query($link1, $select_query3);
     			if (mysqli_num_rows($select_result3) > 0) 
 			    {
 			        while($res = mysqli_fetch_assoc($select_result3)) 
 			        {
 			        	$update_query2 = "UPDATE online_attendance SET is_sent=1 WHERE online_attendance_id='".$online_attendance_id."'";
-    					$update_result2 = mysqli_query($local_link, $update_query2);
+    					$update_result2 = mysqli_query($link1, $update_query2);
     					if($update_result2)
     						echo "inserted";
 			        }
@@ -74,6 +74,7 @@ if($local_link === false){
     }
  
 // Close connection
-mysqli_close($local_link);
+mysqli_close($link1);
 mysqli_close($server_link);
+//Testing commit
 ?>
